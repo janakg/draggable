@@ -17,7 +17,7 @@ example.html
 
 coverage/
 docs/
-lib/
+#lib/
 coverage/
 
 # 'cause we are all yarny and stuff
