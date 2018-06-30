@@ -34,26 +34,41 @@ export default function MultipleContainers() {
     lastOverContainer = evt.sourceContainer;
     containerTwoParent.classList.toggle(Classes.capacity, capacityReached);
   });
-
+  function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+  }
+  var overContainer = null;
   sortable.on('sortable:sort', (evt) => {
-    if (!capacityReached) {
-      return;
-    }
-
-    const sourceIsCapacityContainer = evt.dragEvent.sourceContainer === sortable.containers[1];
-
-    if (!sourceIsCapacityContainer && evt.dragEvent.overContainer === sortable.containers[1]) {
+    overContainer= evt.dragEvent.overContainer;
+    // console.log(sortable.currentOver)
+    evt.cancel();
+    // if(evt.dragEvent.overContainer === sortable.containers[1]) {
+    //   var el = evt.dragEvent.originalSource;
+    //   var cln = el.cloneNode(true);
+    //   cln.style.display = 'block';
+    //   insertAfter(cln,sortable.currentOver)
+    //   // evt.dragEvent.overContainer.appendChild(cln);
+    // }
+  });
+  sortable.on('sortable:stop', (evt) => {
+    debugger; 
+    // console.log(sortable.currentOver)
+    if (evt.newContainer !== overContainer) {
+      var el = evt.dragEvent.originalSource;
+      var cln = el.cloneNode(true);
+      cln.style.display = 'block';
+      insertAfter(cln, sortable.currentOver)
       evt.cancel();
+      // evt.dragEvent.overContainer.appendChild(cln);
     }
   });
+  // sortable.on('sortable:sorted', (evt) => {
+  //   if (lastOverContainer === evt.dragEvent.overContainer) {
+  //     return;
+  //   }
 
-  sortable.on('sortable:sorted', (evt) => {
-    if (lastOverContainer === evt.dragEvent.overContainer) {
-      return;
-    }
-
-    lastOverContainer = evt.dragEvent.overContainer;
-  });
+  //   lastOverContainer = evt.dragEvent.overContainer;
+  // });
 
   return sortable;
 }
